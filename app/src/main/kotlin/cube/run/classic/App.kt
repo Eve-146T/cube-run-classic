@@ -1,10 +1,10 @@
-package cube.run
+package cube.run.classic
 
 import android.app.Application
-import cube.run.core.Haptics
-import cube.run.core.Scores
-import cube.run.core.Settings
-import cube.run.core.SoundFx
+import cube.run.classic.core.Haptics
+import cube.run.classic.core.Scores
+import cube.run.classic.core.Settings
+import cube.run.classic.core.SoundFx
 
 class App : Application() {
     override fun onCreate() {

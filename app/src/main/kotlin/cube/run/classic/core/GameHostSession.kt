@@ -1,4 +1,4 @@
-package cube.run.core
+package cube.run.classic.core
 
 import android.app.Activity
 import java.util.concurrent.atomic.AtomicBoolean

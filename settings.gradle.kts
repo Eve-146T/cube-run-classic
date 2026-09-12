@@ -11,5 +11,5 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "cube-run"
+rootProject.name = "cube-run-classic"
 include(":app")

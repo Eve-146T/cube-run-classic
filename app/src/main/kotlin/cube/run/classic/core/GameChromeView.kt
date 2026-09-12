@@ -1,4 +1,4 @@
-package cube.run.core
+package cube.run.classic.core
 
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
@@ -20,7 +20,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.SeekBar
 import android.widget.TextView
-import cube.run.R
+import cube.run.classic.R
 
 /**
  * The game's HUD overlay: score + best at the top, animated center banners,

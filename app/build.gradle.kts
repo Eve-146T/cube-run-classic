@@ -20,11 +20,11 @@ fun signingValue(prop: String, env: String): String? =
 val releaseStoreFile: String? = signingValue("storeFile", "KEYSTORE_FILE")
 
 android {
-    namespace = "cube.run"
+    namespace = "cube.run.classic"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "cube.run"
+        applicationId = "cube.run.classic"
         minSdk = 29
         targetSdk = 35
         versionCode = 5

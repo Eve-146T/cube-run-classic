@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-Cube Run is a single-activity Android game: a minimalist 3-lane 3D endless runner built with **libGDX** and **Kotlin**. It is a privacy-respecting F-Droid-style app — only the `VIBRATE` permission, no network, no analytics, GPL v3.
+Cube Run Classic is a single-activity Android game: a minimalist 3-lane 3D endless runner built with **libGDX** and **Kotlin**. It is a privacy-respecting F-Droid-style app — only the `VIBRATE` permission, no network, no analytics, GPL v3.
 
 ## Build & run
 
@@ -25,7 +25,7 @@ There are **no unit tests** — `app/src/test` / `androidTest` do not exist. CI 
 
 ## Architecture
 
-The package root is `cube.run` (under `app/src/main/kotlin/`).
+The package root is `cube.run.classic` (under `app/src/main/kotlin/`).
 
 **Startup chain:** `App` (Application) initializes the four singletons — order matters, all are `init(context)`-style objects: `Scores`, `Settings`, `Haptics`, `SoundFx`. → `GameActivity` (a libGDX `AndroidApplication`) builds a `FrameLayout` stacking the libGDX GL surface under a `GameChromeView` HUD, then runs `CubeRun`.
 

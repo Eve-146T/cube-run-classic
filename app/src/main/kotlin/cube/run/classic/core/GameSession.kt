@@ -1,4 +1,4 @@
-package cube.run.core
+package cube.run.classic.core
 
 /**
  * Bridge between a game and its host (HUD, scoring, lifecycle).

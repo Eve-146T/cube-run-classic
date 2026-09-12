@@ -1,4 +1,4 @@
-package cube.run.game
+package cube.run.classic.game
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
@@ -10,11 +10,11 @@ import com.badlogic.gdx.graphics.g3d.attributes.BlendingAttribute
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Vector3
-import cube.run.core.Gdx3DGame
-import cube.run.core.GameSession
-import cube.run.core.Haptics
-import cube.run.core.Settings
-import cube.run.core.SoundFx
+import cube.run.classic.core.Gdx3DGame
+import cube.run.classic.core.GameSession
+import cube.run.classic.core.Haptics
+import cube.run.classic.core.Settings
+import cube.run.classic.core.SoundFx
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min

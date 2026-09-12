@@ -1,4 +1,4 @@
-package cube.run.core
+package cube.run.classic.core
 
 import android.content.Context
 import android.media.AudioAttributes

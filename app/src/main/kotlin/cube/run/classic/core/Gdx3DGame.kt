@@ -1,4 +1,4 @@
-package cube.run.core
+package cube.run.classic.core
 
 import com.badlogic.gdx.ApplicationAdapter
 import com.badlogic.gdx.Gdx

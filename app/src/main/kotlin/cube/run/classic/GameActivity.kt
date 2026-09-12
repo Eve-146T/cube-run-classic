@@ -1,14 +1,14 @@
-package cube.run
+package cube.run.classic
 
 import android.os.Bundle
 import android.view.WindowManager
 import android.widget.FrameLayout
 import com.badlogic.gdx.backends.android.AndroidApplication
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration
-import cube.run.core.GameChromeView
-import cube.run.core.GameHostSession
-import cube.run.core.Scores
-import cube.run.game.CubeRun
+import cube.run.classic.core.GameChromeView
+import cube.run.classic.core.GameHostSession
+import cube.run.classic.core.Scores
+import cube.run.classic.game.CubeRun
 
 /** Single-game launcher host: builds the shared HUD over the libGDX surface and runs Cube Run. */
 class GameActivity : AndroidApplication() {

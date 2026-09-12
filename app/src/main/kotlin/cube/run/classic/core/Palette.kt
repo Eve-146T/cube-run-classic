@@ -1,4 +1,4 @@
-package cube.run.core
+package cube.run.classic.core
 
 import android.graphics.Color
 

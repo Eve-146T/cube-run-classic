@@ -1,4 +1,4 @@
-Cube Run is a minimalist one-thumb 3D runner. The world rushes toward you down a neon three-lane track, and your cube has to dodge, jump, slide and slam its way through everything in the way.
+Cube Run Classic is a minimalist one-thumb 3D runner. The world rushes toward you down a neon three-lane track, and your cube has to dodge, jump, slide and slam its way through everything in the way.
 
 Swipe left or right to snap between lanes, swipe up to leap low walls, swipe down to slide under overhead bars — or swipe down in mid-air to slam back to the ground in a hurry. Pillars and wide bars leave just one survivable lane, and once you get going some obstacles slide sideways into the open lane as they approach — so read the track and commit at the last moment.
 
@@ -13,4 +13,4 @@ Features:
 * A local high score. No accounts, no ads, no tracking, no network access.
 * Tiny download and fully playable offline.
 
-Cube Run is built with libGDX and is free and open-source software, licensed under the GNU General Public License v3.0.
+Cube Run Classic is built with libGDX and is free and open-source software, licensed under the GNU General Public License v3.0.
