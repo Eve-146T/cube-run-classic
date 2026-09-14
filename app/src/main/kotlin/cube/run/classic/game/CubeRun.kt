@@ -129,7 +129,7 @@ class CubeRun(session: GameSession) : Gdx3DGame(session) {
     // diff auto-advances as you play. Speed is linear up to the "blue line" (the
     // cruising max) and then gives diminishing returns toward the absolute ceiling.
     private val exploreMinSpd = 10f  // speed at diff = 0
-    private val exploreMaxSpd = 30f  // absolute ceiling (diff = 1); only ever approached, never the cruise speed
+    private val exploreMaxSpd = 30f  // base ceiling (diff = 1), raised by blue boost taps
     private val blueLine = 0.85f     // the blue line: the cruising max speed; past here speed barely climbs
     private val cruiseSpd = exploreMinSpd + (exploreMaxSpd - exploreMinSpd) * blueLine // speed at the blue line (27)
     private val rampSeconds = 700f   // real seconds for diff to auto-climb the full 0..1 range
@@ -138,7 +138,9 @@ class CubeRun(session: GameSession) : Gdx3DGame(session) {
 
     // ---- fire boost: an opening-seconds button that front-loads your speed ----
     private val fireWindow = 15f                // seconds the button stays available from the run's start
-    private val fireMaxTaps = 5                 // taps before it maxes out
+    private val fireArrows = 5                 // orange first pass, blue second pass
+    private val fireMaxTaps = fireArrows * 2
+    private val fireBlueMaxSpd = 40f            // ceiling with all five blue arrows
     private val fireMaxSpd = cruiseSpd * 0.8f   // 5 taps launches you at 80% of the blue-line speed
     private val fireMaxDiff = (fireMaxSpd - exploreMinSpd) / (exploreMaxSpd - exploreMinSpd)
     private var fireTaps = 0
@@ -650,17 +652,22 @@ class CubeRun(session: GameSession) : Gdx3DGame(session) {
 
     // ------------------------------------------------------------- fire button
     // A boost button shown for the first [fireWindow] seconds of a run. Each tap
-    // front-loads your speed; [fireMaxTaps] taps launch you at 80% of the blue-line
-    // (cruise) speed. It flickers in its final seconds, then disappears.
+    // front-loads your speed. Five taps reach 80% of the base cruise speed;
+    // the next five turn the arrows blue and raise the run's speed ceiling.
+    // It flickers in its final seconds, then disappears.
 
     /** Speed for a difficulty level: linear up to the blue line, diminishing returns beyond it. */
-    private fun speedFor(d: Float): Float =
-        if (d <= blueLine) {
-            exploreMinSpd + (exploreMaxSpd - exploreMinSpd) * d
+    private fun speedFor(d: Float): Float {
+        val blueBoost = (fireTaps - fireArrows).coerceIn(0, fireArrows) / fireArrows.toFloat()
+        val maxSpd = exploreMaxSpd + (fireBlueMaxSpd - exploreMaxSpd) * blueBoost
+        val cruise = exploreMinSpd + (maxSpd - exploreMinSpd) * blueLine
+        return if (d <= blueLine) {
+            exploreMinSpd + (maxSpd - exploreMinSpd) * d
         } else {
             val o = (d - blueLine) / (1f - blueLine)
-            cruiseSpd + (exploreMaxSpd - cruiseSpd) * (1f - (1f - o) * (1f - o))
+            cruise + (maxSpd - cruise) * (1f - (1f - o) * (1f - o))
         }
+    }
 
     private fun fireVisible(): Boolean =
         started && !dead && !session.isOver && runTime < fireWindow
@@ -679,12 +686,16 @@ class CubeRun(session: GameSession) : Gdx3DGame(session) {
     private fun tapFire() {
         if (!fireAvailable()) return
         fireTaps++
-        val boost = startDiff + (fireMaxDiff - startDiff) * (fireTaps / fireMaxTaps.toFloat())
+        val boost = if (fireTaps <= fireArrows) {
+            startDiff + (fireMaxDiff - startDiff) * (fireTaps / fireArrows.toFloat())
+        } else {
+            fireMaxDiff + (1f - fireMaxDiff) * ((fireTaps - fireArrows) / fireArrows.toFloat())
+        }
         if (boost > diff) diff = boost
         SoundFx.play("rise", rate = 0.85f + fireTaps * 0.12f)
         Haptics.click()
-        flash(setHsv(tmpCol, 22f, 0.85f, 1f), 0.12f)
-        burst3d(tmp.set(px, py + 0.3f, 0.3f), setHsv(tmpCol, 26f, 0.9f, 1f), n = 12, speed = 6f, size = 0.12f, life = 0.55f)
+        flash(setHsv(tmpCol, if (fireTaps > fireArrows) 205f else 22f, 0.85f, 1f), 0.12f)
+        burst3d(tmp.set(px, py + 0.3f, 0.3f), setHsv(tmpCol, if (fireTaps > fireArrows) 205f else 26f, 0.9f, 1f), n = 12, speed = 6f, size = 0.12f, life = 0.55f)
     }
 
     // ------------------------------------------------------------- style points
@@ -741,7 +752,8 @@ class CubeRun(session: GameSession) : Gdx3DGame(session) {
     override fun renderHud(shapes: ShapeRenderer, w: Float, h: Float) {
         if (!fireVisible()) return
         // 5 stacked "^" chevrons, top-right. Minimalist: one clean opaque orange
-        // outline each (no glow/overlap). Each tap lights one; lit chevrons carry a
+        // outline each (no glow/overlap). Taps 6–10 turn them blue in the same order;
+        // lit chevrons carry a
         // gentle fluid shimmer. The stack flickers in the window's final seconds.
         val cx = fireCx()
         val cyDraw = h - fireCy()           // touch-space centre → draw space (y is up here)
@@ -752,13 +764,17 @@ class CubeRun(session: GameSession) : Gdx3DGame(session) {
         val expiring = runTime > fireWindow - 4f
         val flick = if (expiring && sin(time * 26f) < -0.1f) 0.3f else 1f
         val y0 = cyDraw - 2f * gap          // bottom chevron; stack centred on cyDraw
-        for (i in 0 until fireMaxTaps) {
+        for (i in 0 until fireArrows) {
             val yBase = y0 + i * gap
             val lit = i < fireTaps
-            if (lit) {                      // bright orange with a subtle fluid shimmer
+            if (lit) {                      // orange or blue with a subtle fluid shimmer
                 val wave = 0.5f + 0.5f * sin(time * 5f - i * 0.8f)
                 val v = 0.9f + 0.1f * wave
-                shapes.setColor(v, 0.5f * v, 0.05f * v, flick)
+                if (i < fireTaps - fireArrows) {
+                    shapes.setColor(0.1f * v, 0.65f * v, v, flick)
+                } else {
+                    shapes.setColor(v, 0.5f * v, 0.05f * v, flick)
+                }
             } else {                        // waiting: dim
                 shapes.setColor(0.5f, 0.28f, 0.1f, 0.5f * flick)
             }

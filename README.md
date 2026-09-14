@@ -20,7 +20,7 @@ Latest APK: [GitHub releases](https://github.com/Eve-146T/cube-run-classic/relea
 
 - Swipe to control your character
 - You have to jump over some obstacles and slide under others.
-- If you're a pro gamer you can press the headstart icon up to 5 times to start faster
+- Press the headstart icon up to 10 times to start faster. Taps 6–10 turn the arrows blue and raise your maximum speed.
 
 
 ## License
